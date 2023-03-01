@@ -42,7 +42,7 @@ The terraform module has following features:
   - [Amazon machine image (AMI)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html) (optional)
   - [Amazon EC2 instance type](https://aws.amazon.com/ec2/instance-types/) (optional)
 - Uniformly name and tag the provisioned resources.
-- Additional module ([tls\pca](./modules/tls/pca)) is provided for generating IBM C:D Unix compatible server `keycert` file for development and testing purpose.
+- Additional module ([tls\pca](https://github.com/aws-samples/aws-tf-cdu/tree/main/modules/tls/pca)) is provided for generating IBM C:D Unix compatible server `keycert` file for development and testing purpose.
 
 ## Prerequisites
 
@@ -54,12 +54,12 @@ The terraform module has following features:
 - AWS SDK for Python [boto3 1.24+](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html#installation) is installed.
 - The [openssl 1.1.1+](https://www.openssl.org/) is installed, if you are generating your own server certificate.
 - Terraform backend provider and state locking providers are identified and bootstrapped.
-  - A [bootstrap](./examples/bootstrap) module/example is provided that provisions an Amazon S3 bucket for Terraform state storage and Amazon DynamoDB table for Terraform state locking.
+  - A [bootstrap](https://github.com/aws-samples/aws-tf-cdu/tree/main/examples/bootstrap) module/example is provided that provisions an Amazon S3 bucket for Terraform state storage and Amazon DynamoDB table for Terraform state locking.
     - **The Amazon S3 bucket name must be globally unique.**
 - The target VPC along with the target Subnets exist and are identified via tags.
-  - A [vpc](./examples/vpc) example is provided that provisions VPC, Subnets and related resources with example tagging.
+  - A [vpc](https://github.com/aws-samples/aws-tf-cdu/tree/main/examples/vpc) example is provided that provisions VPC, Subnets and related resources with example tagging.
 - Optionally, Route 53 Hosted zone exists and identified by name.
-  - The [vpc](./examples/vpc) example also creates a private hosted zone.
+  - The [vpc](https://github.com/aws-samples/aws-tf-cdu/tree/main/examples/vpc) example also creates a private hosted zone.
 - A unique project code name e.g., `cdu-x` is identified that will be used to uniformly name the key aliases.
 - Uniform resource tagging scheme is identified.
   - *The examples use only two tags: `Env` and `Project`*
@@ -70,7 +70,7 @@ The terraform module has following features:
 - IBM C:D Unix server `keycert` file is generated and uploaded to the `s3_bucket`.
   - Obtain the TLS server certificate from your enterprise certificate authority (CA) or create a private certificate authority (PCA) and server certificate.
     - *The server `keycert` file is created by concatenating the encrypted private key and the server certificate issued by the CA into a single keycert file.*
-  - *A [tls](./examples/tls) example is provided that creates a PCA and server `keycert` files that are automatically uploaded to the `s3_bucket`. This can be used for testing purpose only.*
+  - *A [tls](https://github.com/aws-samples/aws-tf-cdu/tree/main/examples/tls) example is provided that creates a PCA and server `keycert` files that are automatically uploaded to the `s3_bucket`. This can be used for testing purpose only.*
   - If you are generating the server `keycert` file from key/certificate obtained from the enterprise CA.
     - Upload it to the `s3_bucket` along with the CA Certificate and the Issuer Certificate at the prefix `/cdu/node-name`.
 - The server private key encryption password is stored in the AWS System Manager Parameter Store.
