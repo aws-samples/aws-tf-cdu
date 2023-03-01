@@ -1,0 +1,27 @@
+/*
+* This sample process brings back the file copied to remote
+* from Linux to Linux
+*/
+
+
+test-l-r process snode=${remote_node_name}
+
+step01 copy
+
+from
+(
+file = /opt/IBM/ConnectDirect/cdunix/ndm/bin/test.txt
+pnode
+)
+
+ckpt = 2M
+compress extended
+
+to
+(
+file = /opt/IBM/ConnectDirect/cdunix/work/test-l-r-from-${local_node_name}.txt
+snode
+disp = rpl
+)
+
+pend;

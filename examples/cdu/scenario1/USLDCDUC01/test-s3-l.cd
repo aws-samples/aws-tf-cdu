@@ -1,0 +1,26 @@
+/*
+* This sample process copies file from s3 to local
+* from S3 to Linux
+*/
+
+
+test-s3-l process snode=${local_node_name}
+
+step01 copy
+
+from
+(
+file = s3://${s3_bucket}/from-cdu/test-l-s3-from-${local_node_name}.txt
+)
+
+ckpt = 2M
+compress extended
+
+to
+(
+file = /opt/IBM/ConnectDirect/cdunix/work/test-s3-l-to-${local_node_name}.txt
+pnode
+disp = rpl
+)
+
+pend;

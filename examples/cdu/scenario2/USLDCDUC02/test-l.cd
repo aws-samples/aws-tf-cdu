@@ -1,0 +1,28 @@
+/*
+* This sample process copies a text file "test.txt"
+* from "pnode" to "snode". Checkpoint interval is set to 2M
+* and extended compression is used. The destination file
+* "test-local.txt" is located in the HOME directory of the installer.
+*/
+
+test-l process snode=${local_node_name}
+
+step01 copy
+
+from
+(
+file = /opt/IBM/ConnectDirect/cdunix/ndm/bin/test.txt
+pnode
+)
+
+ckpt = 2M
+compress extended
+
+to
+(
+file = /opt/IBM/ConnectDirect/cdunix/work/test-local-from-${local_node_name}.txt
+snode
+disp = rpl
+)
+
+pend;

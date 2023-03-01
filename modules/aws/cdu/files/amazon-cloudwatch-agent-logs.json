@@ -1,0 +1,39 @@
+{
+	"agent": {
+		"metrics_collection_interval": 60,
+		"run_as_user": "root"
+	},
+	"logs": {
+		"logs_collected": {
+			"files": {
+				"collect_list": [
+					{
+						"file_path": "/opt/IBM/ConnectDirect/cdunix/work/NODE_NAME/S*.*",
+						"log_group_name": "CW_LOG_GROUP",
+						"log_stream_name": "NODE_NAME-EC2_INSTANCE_ID"
+					},
+					{
+						"file_path": "/tmp/userdata.log",
+						"log_group_name": "CW_LOG_GROUP",
+						"log_stream_name": "NODE_NAME-EC2_INSTANCE_ID-userdata-log"
+					},
+					{
+						"file_path": "/tmp/installer/cdaiLog.txt",
+						"log_group_name": "CW_LOG_GROUP",
+						"log_stream_name": "NODE_NAME-EC2_INSTANCE_ID-cdai-log"
+					},
+					{
+						"file_path": "/opt/IBM/ConnectDirect/cdunix/deployDir/cdaiLog.txt",
+						"log_group_name": "CW_LOG_GROUP",
+						"log_stream_name": "NODE_NAME-EC2_INSTANCE_ID-deploy-cdai-log"
+					},
+					{
+						"file_path": "/tmp/installer/exitStatusFile.txt",
+						"log_group_name": "CW_LOG_GROUP",
+						"log_stream_name": "NODE_NAME-EC2_INSTANCE_ID-install-exit-status"
+					}
+				]
+			}
+		}
+	}
+}

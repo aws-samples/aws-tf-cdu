@@ -1,0 +1,80 @@
+#install | upgrade | uninstall
+cdai_installCmd=install
+#cpio file name, The installation archive
+cdai_cpioFile=cdunix
+#target installation directory.
+cdai_installDir=/opt/IBM/ConnectDirect/cdunix
+#System user ID to use for the C:D administrator user ID
+cdai_adminUserid=cdadmin
+#This variable enables file agent installation
+cdai_installFA=y
+
+#C:D local name. Must be Unique in the environment.
+cdai_localNodeName=USLDCDUC01
+#h | fqn | ip4 | ip6 | string.
+cdai_acquireHostnameOrIP=0.0.0.0
+
+#C:D to C:D Communication Port
+cdai_serverPort=1364
+#CLI/API port
+cdai_clientPort=1363
+#TCP/IP port to listen for a PMGR RPC client request.
+#Required for HP UX Itanium and Sun SPARC-Solaris platforms.
+cdai_rpcPort=1367
+
+#Keycert file for C:D local node and client
+cdai_localCertFile=keycert.txt
+#Passphrase for keycert file,
+#cdai_localCertPassphrase
+
+cdai_trace=y
+
+#Customized text file to update C:D parameter file
+#cdai_spConfig=""
+
+#If y, install even if target install exists
+cdai_ignoreExistingInstallDir=y
+
+#If the default umask of the adminUserid is greater than 22, y causes cdinstall_a to reset the umask of the adminUserid to 22
+cdai_allowUmaskReset=y
+
+#whether to verify an upgrade or not.
+#cdai_verifyUpgrade=y
+
+#This variable allows users to deploy a custom trusted root certificate file
+#cdai_trustedRootCertFile=trusted.txt
+
+#If it is not specified, then the default keystore file is created during the installation.
+#cdai_keystoreFile=""
+#A keystore is created or updated with this password
+
+#This used to label the keycert for use in basic Secure+ configurations for secure client connections
+#cdai_localCertLabel=Client-API
+
+#For an installation that uses FASP, this variable allows deployment of the required license file.
+#cdai_asperaLicenseFile=NA
+
+#Control Center is not being used
+#enable/disable the agent during installation
+#cdai_agentEnable=n
+#TCP/IP port to listen for a Control Center Director request
+#cdai_agentPort=1365
+#URL to Use to connect C:D Agent with Control Center Director
+#cdai_agentOSAurl=
+#Allows disabling OSA without deleting osa.rest.url
+#cdai_agentOSADisable=
+#Informational only
+#cdai_agentInstallationId=NA
+
+#Set the custom backup path for Connect:Direct, which will be used during an upgrade
+#cdai_cdBackupLocation=<installation directory>/restore
+#Set the custom backup path for Install Agent, which will be used during an upgrade.
+#cdai_agentBackupLocation=<installation directory>/install/restore
+#Set the custom backup path for installer, which will be used during emergency restore.
+#cdai_erInstallerLocation=<installation directory>/ndm/bin
+#Set the location for installer download. This location will be used during an upgrade
+#cdai_agentInstallerLocation=<installation directory>/install/downloads
+#Local and Remote User Records to be appended to the userfile.cfg, 6.1.0.1+
+cdai_appendUserFile=userfile_a.cfg
+#Remote Node Connection Records to be appended to the netmap.cfg, 6.1.0.1+
+cdai_appendNetmapFile=netmap_a.cfg
