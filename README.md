@@ -159,6 +159,7 @@ In this scenario the lifecycle of IBM C:D Unix node and related resources such a
 - NLB instances is provisioned fronting the CDU instance.
 - Route 53 alias record is created pointing to NLB.
 
+Refer [examples/cdu/scenario1](./examples/cdu/scenario1) to build this scenario
 ### Scenario 2: Provision IBM® Sterling Connect:Direct® Unix solution - Shared Amazon EFS
 In this scenario the lifecycle of a shared Amazon EFS and mount target(s) is owned by a centralized team, while the lifecycle of IBM C:D Unix node and related resources is owned by the IBM C:D Unix team. This is applicable when an IBM C:D Unix instance may share the storage with other components. For example:
 - AWS Transfer family SFTP server is created that may use this shared EFS as storage backend.
@@ -190,6 +191,7 @@ In this scenario the lifecycle of a shared Amazon EFS and mount target(s) is own
 - NLB instances is provisioned fronting the CDU instance.
 - Route 53 alias record is created pointing to NLB.
 
+Refer [examples/cdu/scenario2](./examples/cdu/scenario2) to build this scenario
 ## Future Enhancements
 - Support for IBM Sterling Connect:Direct Web Services can be added.
 
