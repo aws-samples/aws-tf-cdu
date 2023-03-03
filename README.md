@@ -8,11 +8,11 @@ IBM® Sterling Connect:Direct® provides secured and high-volume point-to-point 
 To support the AWS Cloud strategy for an enterprise, a solution is presented where a highly-available and resilient IBM C:D Unix instance on Amazon EC2 is deployed to exchange files with Amazon S3 and other on-premises IBM C:D sites including z/OS® and OS/400®.
 <p align="center"><img src="images/aws-tf-cdu-big-picture.png" width="90%"/></p>
 
-- High-availability is implemented via auto scaling group to maintain minimum 1 IBM C:D Unix instance in the configured availability zones.
+- High-availability is implemented via Amazon EC2 Auto Scaling Group to maintain minimum 1 IBM C:D Unix instance in the configured Availability Zone(s).
 - IBM C:D Unix instance is fronted by Network Load-Balancer (NLB) to route the traffic to the available instance.
-- On-premises IBM C:D sites communicate via the domain name defined at the Route 53 that is resolved to the NLB.
-- Resiliency of the server state is implemented via highly-available and encrypted Amazon EFS instance with mount points in each availability zone.
-- Security Groups are used for access control to the C:D server and EFS mount points.
+- On-premises IBM C:D sites communicate via the domain name defined at the Amazon Route 53 that is resolved to the NLB.
+- Resiliency of the server state is implemented via highly-available and encrypted Amazon EFS instance with mount points in each Availability Zone.
+- Security Groups are used for access control to the IBM C:D server and Amazon EFS mount points.
 
 ## Features
 
@@ -21,14 +21,14 @@ The terraform module has following features:
 - Provision a [IBM C:D Unix](https://www.ibm.com/docs/en/connect-direct/6.2.0?topic=deployment-connectdirect-unix-silent-installation) node with high-availability and resiliency using [Amazon EFS](https://aws.amazon.com/efs/) in the existing VPC and subnets identified via tags.
   - Amazon EC2 [Auto Scaling Group](https://docs.aws.amazon.com/autoscaling/ec2/userguide/auto-scaling-groups.html) is created (`min=1,max=1,desired=1`) to maintain minimum 1 IBM C:D Unix instance.
   - Optionally, provision the IBM C:D Unix node using [Amazon EBS](https://aws.amazon.com/ebs/) without resiliency of state.
-- Use a shared Amazon EFS instance (identified by `efs_id`), or provision a new [regional](https://docs.aws.amazon.com/efs/latest/ug/storage-classes.html) Amazon EFS instance with [lifecycle management](https://docs.aws.amazon.com/efs/latest/ug/lifecycle-management-efs.html), [EFS mount target(s)](https://docs.aws.amazon.com/efs/latest/ug/manage-fs-access.html), and [security group](https://docs.aws.amazon.com/efs/latest/ug/network-access.html) in the existing VPC and subnets identified via tags.
-  - Optionally encrypt the created EFS file system using an existing [AWS KMS](https://aws.amazon.com/kms/) key or provision a new AWS KMS key for EFS encryption.
-  - Adds necessary rules to the EFS security group, so that IBM C:D Unix instance can access it.
+- Use a shared Amazon EFS instance (identified by `efs_id`), or provision a new [regional](https://docs.aws.amazon.com/efs/latest/ug/storage-classes.html) Amazon EFS instance with [lifecycle management](https://docs.aws.amazon.com/efs/latest/ug/lifecycle-management-efs.html), [EFS mount target(s)](https://docs.aws.amazon.com/efs/latest/ug/manage-fs-access.html), and [Security Group](https://docs.aws.amazon.com/efs/latest/ug/network-access.html) in the existing VPC and subnets identified via tags.
+  - Optionally encrypt the created Amazon EFS file system using an existing [AWS KMS](https://aws.amazon.com/kms/) key or provision a new AWS KMS key for Amazon EFS encryption.
+  - Adds necessary rules to the Amazon EFS Security Group, so that IBM C:D Unix instance can access it.
 - Use an existing [instance profile](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html) or provision a new instance profile with necessary access to Amazon S3 and Amazon CloudWatch.
-- Install and configure the CloudWatch agent to forward the server logs to the Amazon CloudWatch logs.
+- Install and configure the Amazon CloudWatch agent to forward the server logs to the Amazon CloudWatch logs.
 - Optionally encrypt the attached Amazon EBS, [Amazon CloudWatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html), and [AWS System Manager Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) using an existing AWS KMS key or provision a new AWS KMS key for the respective service.
 - Optionally create a [Network Load Balancer](https://aws.amazon.com/elasticloadbalancing/network-load-balancer/) to front the network traffic and to provide consistent IP address to the client(s).
-- Optionally creates a DNS record for the Network Load Balancer via providing the [Route 53 private hosted zone](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/hosted-zones-private.html) name.
+- Optionally creates a DNS record for the Network Load Balancer via providing the [Amazon Route 53 private hosted zone](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/hosted-zones-private.html) name.
 - Support well-known tag based backup using AWS Backup.
 - Customize the IBM C:D Unix node by providing your own
   - node name (`node_name`)
@@ -39,10 +39,10 @@ The terraform module has following features:
   - POSIX UID/GID for the `cdadmin` user (optional)
   - extra test or process files to be copied to the server.
   - Source CIDRs to allow access to the server.
-  - [Amazon machine image (AMI)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html) (optional)
-  - [Amazon EC2 instance type](https://aws.amazon.com/ec2/instance-types/) (optional)
+  - [Amazon Machine Image (AMI)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html) (optional)
+  - [Amazon EC2 Instance Type](https://aws.amazon.com/ec2/instance-types/) (optional)
 - Uniformly name and tag the provisioned resources.
-- Additional module ([tls\pca](./modules/tls/pca)) is provided for generating IBM C:D Unix compatible server `keycert` file for development and testing purpose.
+- Additional module [tls\pca](./modules/tls/pca) is provided for generating IBM C:D Unix compatible server `keycert` file for development and testing purpose.
 
 ## Prerequisites
 
@@ -58,7 +58,7 @@ The terraform module has following features:
     - **The Amazon S3 bucket name must be globally unique.**
 - The target VPC along with the target Subnets exist and are identified via tags.
   - A [vpc](./examples/vpc) example is provided that provisions VPC, Subnets and related resources with example tagging.
-- Optionally, Route 53 Hosted zone exists and identified by name.
+- Optionally, Amazon Route 53 Hosted zone exists and identified by name.
   - The [vpc](./examples/vpc) example also creates a private hosted zone.
 - A unique project code name e.g., `cdu-x` is identified that will be used to uniformly name the key aliases.
 - Uniform resource tagging scheme is identified.
@@ -88,6 +88,8 @@ The terraform module has following features:
   ```terraform
   module "cdu" {
     source = "./modules/aws/cdu"
+    #or
+    #source = "github.com/aws-samples/aws-tf-cdu//modules/aws/cdu?ref=v1.0.0"
 
     region = "us-east-1"
 
@@ -132,7 +134,7 @@ In this scenario the lifecycle of IBM C:D Unix node and related resources such a
 - Optionally, Route 53 Hosted zone exists and identified by name.
 <p align="center"><img src="images/aws-tf-cdu-Scenario-2p.png" width="70%"/></p>
 
-- EFS file system does not exist.
+- Amazon EFS file system does not exist.
 - EFS access point does not exist.
 - EFS mount targets do not exist in the target VPC Subnets.
 - EFS Security Group does not exist.
@@ -145,32 +147,32 @@ In this scenario the lifecycle of IBM C:D Unix node and related resources such a
 **Outcome**
 <p align="center"><img src="images/aws-tf-cdu-Scenario-2o.png" width="80%"/></p>
 
-- EFS file system is created.
+- Amazon EFS file system is created.
 - EFS Security Group is created with default rules.
 - EFS mount targets are created in the target VPC Subnets.
 - Standardized EFS resource policy is created.
 - No EFS access points are created.
-- Encrypted CloudWatch log group is created for CDU node logs.
+- Encrypted Amazon CloudWatch log group is created for CDU node logs.
 - IAM role and instance profile for CDU instance is created.
 - Security Group for network access control to CDU instance is created.
 - CDU instance is provisioned with state managed on EFS.
 - Test files and scripts are copied to the CDU instance.
-- Auto scaling group is created to manage minimum availability of CDU instance.
+- Auto Scaling Group is created to manage minimum availability of CDU instance.
 - NLB instances is provisioned fronting the CDU instance.
-- Route 53 alias record is created pointing to NLB.
+- Amazon Route 53 alias record is created pointing to NLB.
 
 Refer [examples/cdu/scenario1](./examples/cdu/scenario1) to build this scenario
 ### Scenario 2: Provision IBM® Sterling Connect:Direct® Unix solution - Shared Amazon EFS
 In this scenario the lifecycle of a shared Amazon EFS and mount target(s) is owned by a centralized team, while the lifecycle of IBM C:D Unix node and related resources is owned by the IBM C:D Unix team. This is applicable when an IBM C:D Unix instance may share the storage with other components. For example:
 - AWS Transfer family SFTP server is created that may use this shared EFS as storage backend.
-- Amazon EC2 instances may mount this EFS to exchange files with SFTP server or IBM C:D Unix node.
+- Amazon EC2 instances may mount this EFS file system to exchange files with SFTP server or IBM C:D Unix node.
 
 **Prerequisites**
 - The target VPC along with the target Subnets exist and identified via tags.
 - Optionally, Route 53 Hosted zone exists and identified by name.
 <p align="center"><img src="images/aws-tf-cdu-Scenario-1p.png" width="70%"/></p>
 
-- EFS file system exist.
+- Amazon EFS file system exist.
 - EFS mount targets exist in the target VPC Subnets.
 - EFS Security Group exist and identified via tags.
 - An Amazon S3 bucket (`s3_bucket`), used for the IBM C:D Unix installer binary and configuration files exists and identified by name.
@@ -182,12 +184,12 @@ In this scenario the lifecycle of a shared Amazon EFS and mount target(s) is own
 **Outcome**
 <p align="center"><img src="images/aws-tf-cdu-Scenario-1o.png" width="80%"/></p>
 
-- Encrypted CloudWatch log group is created for CDU node logs.
+- Encrypted Amazon CloudWatch log group is created for CDU node logs.
 - IAM role and instance profile for CDU instance is created.
 - Security Group for network access control to CDU instance is created.
 - CDU instance is provisioned with state managed on EFS.
 - Test files and scripts are copied to the CDU instance.
-- Auto scaling group is created to manage minimum availability of CDU instance.
+- Auto Scaling Group is created to manage minimum availability of CDU instance.
 - NLB instances is provisioned fronting the CDU instance.
 - Route 53 alias record is created pointing to NLB.
 

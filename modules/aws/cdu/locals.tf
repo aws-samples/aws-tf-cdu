@@ -86,7 +86,12 @@ locals {
 
   cdu_config_files = flatten([local.cdu_required_files, local.cdu_netmap_file, local.cdu_users_file])
 
-  cdu_extra_files_content = [for extra_file in var.cdu_extra_files.files : "sudo su cdadmin -c \"aws s3 cp s3://${local.cdu_params.s3_bucket}/cdu/${local.cdu_params.node_name}/${extra_file.source} ${extra_file.target}\""]
+  cdu_extra_files = try(length(var.cdu_extra_files), 0) == 0 ? {
+    tokens = []
+    files  = []
+  } : var.cdu_extra_files
+
+  cdu_extra_files_content = [for extra_file in local.cdu_extra_files.files : "sudo su cdadmin -c \"aws s3 cp s3://${local.cdu_params.s3_bucket}/cdu/${local.cdu_params.node_name}/${extra_file.source} ${extra_file.target}\""]
 }
 
 locals {
